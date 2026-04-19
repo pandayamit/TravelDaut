@@ -4,17 +4,19 @@
         <div class="col-8 offset-2">
             <h3>Edit you Listing details </h3>
             <br />
-            <form method="post" action="/listings/<%=list._id%>?_method=PUT">
+            <form method="post" action="/listings/<%=list._id%>?_method=PUT" class="needs-validation" noValidate>
 
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" value="<%= list.title %>" name="listing[title]" required class="form-control" />
+                        <div class="invalid-feedback">Please enter title before save</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea name="listing[description]" required
                         class="form-control"><%= list.description %></textarea>
+                        <div class="invalid-feedback">Please add a short description</div>
                 </div>
 
                 <div class="mb-3">
@@ -28,12 +30,14 @@
                     <label for="price" class="form-label">Price</label>
                     <input type="number" value="<%= list.price %>" name="listing[price]" class="form-control"
                         required />
+                        <div class="invalid-feedback">Please set price for the location</div>
                 </div>
 
                 <div class="mb-3 col-md-8">
                     <label for="country" class="form-label">Country</label>
                     <input type="text" value="<%= list.country %>" name="listing[country]" class="form-control"
                         required />
+                        <div class="invalid-feedback">Please enter a valid country name</div>
                 </div>
                 </div>
 
@@ -41,6 +45,7 @@
                     <label for="location" class="form-label">Location</label>
                     <input type="text" value="<%= list.location %>" name="listing[location]" class="form-control"
                         required />
+                        <div class="invalid-feedback">Please enter a location before saving</div>
                 </div>
 
 

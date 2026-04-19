@@ -3,17 +3,20 @@
         <div class="col-8 offset-2">
             <h3 class="mb-4">Create New Listing</h3>
             
-            <form method="post" action="/listings" >
+            <form method="post" action="/listings" class="needs-validation" novalidate >
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" placeholder="Add a Catchy Title" name="listing[title]" required
                         class="form-control" />
+                        <div class="valid-feedback">Title looks good!</div>
+                        <div class="invalid-feedback">Oops! you missed the title here</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea placeholder="Description" name="listing[description]" required
                         class="form-control"></textarea>
+                        <div class="invalid-feedback">Please enter a short description</div>
                 </div>
 
                 <div class="mb-3">
@@ -26,11 +29,13 @@
                     <div class="mb-3 col-md-4">
                         <label for="price" class="form-label">Price</label>
                         <input type="number" placeholder="3300" name="listing[price]" required class="form-control" />
+                        <div class="invalid-feedback">Please set the price for the location</div>
                     </div>
 
                     <div class="mb-3 col-md-8">
                         <label for="country" class="form-label">Country</label>
                         <input type="text" placeholder="India" name="listing[country]" required class="form-control" />
+                        <div class="invalid-feedback">Please put the valid country name here</div>
                     </div>
                 </div>
 
@@ -38,6 +43,7 @@
                     <label for="location" class="form-label">Location</label>
                     <input type="text" placeholder="Lucknow,Uttar Pradesh" name="listing[location]" required
                         class="form-control" />
+                        <div class="invalid-feedback">Please enter a valid location</div>
                 </div>
 
 
