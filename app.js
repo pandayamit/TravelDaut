@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js")
 const ExpressError = require("./utils/ExpressError.js");
+const {listingSchema}=require("./schema.js");
 
 
 app.set("views", path.join(__dirname, "views"));
@@ -36,6 +37,13 @@ app.get("/", (req, res) => {
     res.send("Working...")
 });
 
+// Middleware for listing add 
+const validateListing= (req,res,next)=>{
+    let {error}= listingSchema.validate(req.body);
+    if (error){
+        throw new ExpressError(400, error)
+    }
+}
 
 
 // ..................................Index Route................................................
@@ -65,13 +73,44 @@ app.get("/listings/:id", wrapAsync(async (req, res) => {
 
 //....................................Create Route...........................................
 
-app.post("/listings", wrapAsync(async (req, res) => {
+app.post("/listings",validateListing, wrapAsync(async (req, res) => {
     // let {title,description,image,price,location,country} = req.body;
     // console.log("Working");
-    if (!req.body.listing) {
-        throw new ExpressError(400, "Send valid data for listing");
-    }
+    // if (!req.body.listing) {
+    //     throw new ExpressError(400, "Send valid data for listing");
+    // }
+
+
+    // Validation with joi 
+    // let result=listingSchema.validate(req.body);
+    // console.log(result);
+    // if(result.error){
+    //     throw new ExpressError(404, result.error);
+    // }
+
+
     let newListing = new Listing(req.body.listing);
+
+
+    //Validation of schema without using joi
+    // if(!newListing.title){
+    //     throw new ExpressError(400,"title is missing");
+    // }
+    //  if(!newListing.description){
+    //     throw new ExpressError(400,"description is missing");
+    // }
+    //  if(!newListing.image){
+    //     throw new ExpressError(400,"image is missing");
+    // }
+    //  if(!newListing.price){
+    //     throw new ExpressError(400,"price is missing");
+    // }
+    //  if(!newListing.location){
+    //     throw new ExpressError(400,"location is missing");
+    // }
+    //  if(!newListing.country){
+    //     throw new ExpressError(400,"country is missing");
+    // }
     await newListing.save();
     res.redirect("/listings");
 })
@@ -92,7 +131,7 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 //......................................Update Route..........................................
 
 
-app.put("/listings/:id", wrapAsync(async (req, res) => {
+app.put("/listings/:id",validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
      if (!req.body.listing) {
         throw new ExpressError(400, "Send valid data for listing");
@@ -139,7 +178,8 @@ app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something went wrong!" } = err;
     // console.log(err.message);
     // res.send("Something went wrong");
-    res.status(statusCode).send(message);
+    res.status(statusCode).render("error.ejs", {err});
+    // res.status(statusCode).send(message);
 });
 
 app.listen(port, () => {
