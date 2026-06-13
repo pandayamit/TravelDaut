@@ -7,7 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js")
 const ExpressError = require("./utils/ExpressError.js");
-const {listingSchema}=require("./schema.js");
+const {listingSchema} = require("./schema.js");
 
 
 app.set("views", path.join(__dirname, "views"));
@@ -37,12 +37,13 @@ app.get("/", (req, res) => {
     res.send("Working...")
 });
 
-// Middleware for listing add 
+// Middleware for listing add & edit 
 const validateListing= (req,res,next)=>{
     let {error}= listingSchema.validate(req.body);
     if (error){
         throw new ExpressError(400, error)
     }
+    next();
 }
 
 

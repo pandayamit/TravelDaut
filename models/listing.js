@@ -12,7 +12,7 @@ const listingSchema =new Schema({
   },
   image:{
     type:String,
-    set:(v)=> v==="" ? "defaultLink":v,
+    set:(v)=> v==="" ? "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=60":v,
   },
   price:{
     type:Number,
