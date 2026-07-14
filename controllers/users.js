@@ -1,0 +1,63 @@
+const User= require("../models/users");
+
+
+module.exports.signupForm=(req,res)=>{
+//    res.send("form");
+   res.render("users/signup.ejs");
+};
+
+module.exports.signup=async(req,res)=>{
+    try{
+    let {username,password,email}=req.body;
+    const newUser= new User({email,username});
+    const registeredUser=await User.register(newUser,password);
+    req.login(registeredUser,(err)=>{
+      if(err){
+        return next(err);
+      }  
+    req.flash("success","welcome to TravelDaut");
+    // res.send(registeredUser);
+    console.log(registeredUser);
+    res.redirect("/listings");
+    });
+
+    }
+    catch(error){
+        console.log(error);
+        req.flash("error",error.message);
+        res.redirect("/signup");
+    }
+};
+
+module.exports.renderLoginForm=async(req,res)=>{
+    try{
+        res.render("users/login.ejs");
+    }catch(error){
+        console.log("error",error);
+        res.redirect("/login");
+    }
+};
+
+
+module.exports.login=async(req,res)=>{
+
+      console.log("Login successful");
+    console.log(req.user);
+     req.flash("success","Welcome to TravelDaut!, You are logged in!");
+        // res.redirect("/listings")
+        // res.redirect(req.session.redirectUrl);
+
+        let redirectUrl= res.locals.redirectUrl || "/listings";
+        res.redirect(redirectUrl);
+};
+
+
+module.exports.logout=(req,res,next)=>{
+    req.logout((err)=>{
+        if(err){
+            next(err)
+        }
+        req.flash("success","you are logged out!");
+        res.redirect("/listings");
+    })
+};
